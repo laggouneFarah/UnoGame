@@ -1,12 +1,10 @@
 
 public class CarteSpeciale extends Carte {
-	String wild;
-    String wildfour;
-
-	public CarteSpeciale(int num, char couleur,String wildfour, String wild ) {
-		super(num, couleur);
-        this.wild=wild;
-        this.wildfour=wildfour;
+	public CarteSpeciale(String valeur) {
+		super(valeur, 'N'); //N veut dire aucune couleur
+        if(!type.equals("wild") && !type.equals("wildfour")){
+			throw new IllegalArgumentException("Type non valide");
+		}
 	}
 
 }
