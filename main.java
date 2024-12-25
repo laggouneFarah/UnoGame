@@ -3,8 +3,8 @@ public class main{
      
      // Création de cartes
      CarteNormale carte1 = new CarteNormale('R', 5);
-     CarteSpeciale carte2 = new CarteSpeciale('B', "Passer"); 
-     CarteJoker carte3 = new CarteJoker("wild"); 
+     CarteSpeciale carte2 = new CarteAction('B', "Passer"); 
+     CarteJoker carte3 = new CarteSpeciale("wild"); 
         
       // Affichage
      carte1.afficher(); 
