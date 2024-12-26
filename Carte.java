@@ -1,5 +1,5 @@
 public class Carte {
-	private String valeur; // num , signe 
+	private final String valeur; // num , signe 
 	private char couleur;// r , b , j ,v
 	public Carte(String valeur, char couleur) {
 		this.couleur=couleur;
@@ -15,6 +15,10 @@ public class Carte {
     }
 
     public void afficher() {
-        System.out.println("Carte: " + couleur + " " + valeur);
+        System.out.println("Carte: " + valeur + " " + couleur);
+    }
+
+    public void setCouleur(char couleur) {
+        this.couleur = couleur;
     }
 }
