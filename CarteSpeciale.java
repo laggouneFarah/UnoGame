@@ -7,6 +7,7 @@ public class CarteSpeciale extends Carte {
 		}
 	}
 	//j'ai redefinie la methode psk ay tkhrjli null
+        @Override
 	public void afficher() {
         // Redéfinir l'affichage sans couleur pour CarteSpeciale
         System.out.println("Carte spéciale: " + getValeur());
