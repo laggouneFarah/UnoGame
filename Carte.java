@@ -35,4 +35,9 @@ public class Carte {
      carte3.afficher(); 
               
     }
+
+    public boolean matches(Carte topCard) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'matches'");
+    }
 }

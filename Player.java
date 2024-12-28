@@ -2,10 +2,10 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class Player {
-    private String playerName;          // Name of the player
-    private ArrayList<Card> cardsInHand; // List of cards the player holds
-    private boolean isHumanPlayer;     // Flag to check if the player is human
-    private Random rng;                // Random number generator for AI decisions
+    final String playerName;          // Name of the player
+    final ArrayList<Carte> cardsInHand; // List of cards the player holds
+    final boolean isHumanPlayer;     // Flag to check if the player is human
+    final Random rng;                // Random number generator for AI decisions
 
     // Constructor
     public Player(String playerName, boolean isHumanPlayer) {
@@ -16,14 +16,14 @@ public class Player {
     }
 
     // Add a card to the player's hand
-    public void addCard(Card card) {
+    public void addCard(Carte card) {
         cardsInHand.add(card);
         // Debug: Uncomment for debugging
         // System.out.println("DEBUG: " + playerName + " added " + card + " to hand.");
     }
 
     // Remove a card from the player's hand
-    public void playCard(Card card) {
+    public void playCard(Carte card) {
         if (!cardsInHand.remove(card)) {
             System.out.println("Warning: Tried to play a card not in hand."); // Typical human oversight
         }
@@ -35,7 +35,7 @@ public class Player {
         if (cardsInHand.isEmpty()) {
             System.out.println("  (No cards left!)");
         } else {
-            for (Card card : cardsInHand) {
+            for (Carte card : cardsInHand) {
                 System.out.println("  - " + card); // Indent for clarity
             }
         }
@@ -43,7 +43,7 @@ public class Player {
 
     // Draw a card
     public void drawFromDeck(Deck deck) {
-        Card newCard = deck.draw();
+        Carte newCard = deck.piocher();
         if (newCard != null) {
             addCard(newCard);
             System.out.println(playerName + " drew a card: " + newCard);
@@ -53,8 +53,8 @@ public class Player {
     }
 
     // Check if a card can be played
-    public boolean hasPlayableCard(Card topCard) {
-        for (Card card : cardsInHand) {
+    public boolean hasPlayableCard(Carte topCard) {
+        for (Carte card : cardsInHand) {
             if (card.matches(topCard)) {
                 return true;
             }
@@ -63,9 +63,9 @@ public class Player {
     }
 
     // AI logic for choosing a card to play
-    public Card selectCardToPlay(Card topCard) {
-        ArrayList<Card> validCards = new ArrayList<>();
-        for (Card card : cardsInHand) {
+    public Carte selectCardToPlay(Carte topCard) {
+        ArrayList<Carte> validCards = new ArrayList<>();
+        for (Carte card : cardsInHand) {
             if (card.matches(topCard)) {
                 validCards.add(card);
             }
@@ -88,14 +88,14 @@ public class Player {
     }
 
     // AI or player decision logic
-    public void takeTurn(Card topCard, Deck deck) {
+    public void takeTurn(Carte topCard, Deck deck) {
         if (isHumanPlayer) {
             // Placeholder for human logic
             System.out.println(playerName + ", it's your turn!");
         } else {
             // AI behavior
             if (hasPlayableCard(topCard)) {
-                Card cardToPlay = selectCardToPlay(topCard);
+                Carte cardToPlay = selectCardToPlay(topCard);
                 if (cardToPlay != null) {
                     playCard(cardToPlay);
                     System.out.println(playerName + " played: " + cardToPlay);
@@ -105,4 +105,5 @@ public class Player {
             }
         }
     }
+
 }

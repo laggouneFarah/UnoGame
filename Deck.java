@@ -17,26 +17,26 @@ public class Deck {
 
         for (char couleur : couleurs) {
             for (int numero = 0; numero <= 9; numero++) {
-                cartes.add(new CarteNormale(couleur, numero));
+                cartes.add(new CarteNormale( numero, couleur));
                 if (numero != 0) { //apart 0
-                    cartes.add(new CarteNormale(couleur, numero));
+                    cartes.add(new CarteNormale( numero , couleur));
                 }
             }
         }
 
-        // ajouter les cartes spéciales (Passer, Inverser, +2)
+        // ajouter les cartes action (Passer, Inverser, +2)
         String[] actions = {"Passer", "Inverser", "+2"};
         for (char couleur : couleurs) {
             for (String action : actions) {
-                cartes.add(new CarteSpeciale(couleur, action));
-                cartes.add(new CarteSpeciale(couleur, action));
+                cartes.add(new CarteAction( action ,couleur));
+                cartes.add(new CarteAction( action,couleur));
             }
         }
 
-        // ajouter les cartes Joker (Joker et +4)
+        // ajouter les cartes speciale (wild ou wildfour)
         for (int i = 0; i < 4; i++) {
-            cartes.add(new CarteJoker("Joker"));
-            cartes.add(new CarteJoker("+4"));
+            cartes.add(new CarteSpeciale("wild"));
+            cartes.add(new CarteSpeciale("wildfour"));
         }
     }
 
