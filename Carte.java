@@ -37,7 +37,7 @@ public class Carte {
     }
 
     public boolean matches(Carte topCard) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'matches'");
+        // Assuming cards match if either their rank (valeur) or suit (couleur) is the same
+        return (this.valeur == null ? topCard.getValeur() == null : this.valeur.equals(topCard.getValeur())) || this.couleur == topCard.getCouleur();
     }
 }
