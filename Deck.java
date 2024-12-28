@@ -2,47 +2,47 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class Deck {
-    private ArrayList<Carte> cartes;
-
-    public Deck() {
-        cartes = new ArrayList<>();
-        initialiserDeck();
-        melanger();
-    }
-
-    // initialiser le deck avec toutes les cartes Uno
-    private void initialiserDeck() {
-        // ajouter les cartes normales (men 0 à 9 pour chaque couleur, 2 de chaque sauf le 0)
-        char[] couleurs = {'R', 'B', 'V', 'J'};
-
-        for (char couleur : couleurs) {
-            for (int numero = 0; numero <= 9; numero++) {
-                cartes.add(new CarteNormale( numero, couleur));
-                if (numero != 0) { //apart 0
-                    cartes.add(new CarteNormale( numero , couleur));
+    private static ArrayList<Carte> cartes;
+    
+        public Deck() {
+            cartes = new ArrayList<>();
+            initialiserDeck();
+            melanger();
+        }
+    
+        // initialiser le deck avec toutes les cartes Uno
+        private void initialiserDeck() {
+            // ajouter les cartes normales (men 0 à 9 pour chaque couleur, 2 de chaque sauf le 0)
+            char[] couleurs = {'R', 'B', 'V', 'J'};
+    
+            for (char couleur : couleurs) {
+                for (int numero = 0; numero <= 9; numero++) {
+                    cartes.add(new CarteNormale( numero, couleur));
+                    if (numero != 0) { //apart 0
+                        cartes.add(new CarteNormale( numero , couleur));
+                    }
                 }
             }
-        }
-
-        // ajouter les cartes action (Passer, Inverser, +2)
-        String[] actions = {"Passer", "Inverser", "+2"};
-        for (char couleur : couleurs) {
-            for (String action : actions) {
-                cartes.add(new CarteAction( action ,couleur));
-                cartes.add(new CarteAction( action,couleur));
+    
+            // ajouter les cartes action (Passer, Inverser, +2)
+            String[] actions = {"Passer", "Inverser", "+2"};
+            for (char couleur : couleurs) {
+                for (String action : actions) {
+                    cartes.add(new CarteAction( action ,couleur));
+                    cartes.add(new CarteAction( action,couleur));
+                }
+            }
+    
+            // ajouter les cartes speciale (wild ou wildfour)
+            for (int i = 0; i < 4; i++) {
+                cartes.add(new CarteSpeciale("wild"));
+                cartes.add(new CarteSpeciale("wildfour"));
             }
         }
-
-        // ajouter les cartes speciale (wild ou wildfour)
-        for (int i = 0; i < 4; i++) {
-            cartes.add(new CarteSpeciale("wild"));
-            cartes.add(new CarteSpeciale("wildfour"));
-        }
-    }
-
-    //mélanger le deck
-    public void melanger() {
-        Collections.shuffle(cartes);
+    
+        //mélanger le deck
+        public static void melanger() {
+            Collections.shuffle(cartes);
     }
 
     // piocher une carte
