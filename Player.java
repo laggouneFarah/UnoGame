@@ -108,6 +108,7 @@ public class Player {
     }
     // Méthode pour que le joueur choisisse une couleur
     public char choisirCouleur() {
+        @SuppressWarnings("resource")
         Scanner scanner = new Scanner(System.in);
         char chosenColor = ' ';
         boolean validChoice = false;
@@ -130,4 +131,5 @@ public class Player {
 
         return chosenColor;
     }
+    
 }

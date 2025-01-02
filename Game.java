@@ -1,7 +1,7 @@
 
 import java.util.ArrayList;
 
-  public class Game {
+  public final class Game {
       private final Deck deck; // Le deck principal contenant toutes les cartes
       private final ArrayList<Player> listeDePlayers; // Liste des joueurs
       private final ArrayList<Carte> gamePile; // Pile de défausse pour les cartes jouées
@@ -68,21 +68,21 @@ import java.util.ArrayList;
       public void specialCardCase(CarteAction card) {
           String action = card.getValeur(); // Récupérer l'action de la carte
           switch (action) {
-              case "Passer":
+              case "Passer" -> {
                   System.out.println(listeDePlayers.get(currentPlayerIndex).getName() + " perd son tour !!");
                   nextPlayer(); // Passer au joueur suivant
-                  break;
-              case "Inverser":
+              }
+              case "Inverser" -> {
                   System.out.println("Le sens du jeu est inversé !!");
                   reverseDirection = !reverseDirection; // Changer le sens du jeu
-                  break;
-              case "+2":
+              }
+              case "+2" -> {
                   nextPlayer(); // Passer au joueur suivant
                   Player nextPlayer = listeDePlayers.get(currentPlayerIndex);
                   System.out.println(nextPlayer.getName() + " oh non , tu dois piocher 2 cartes !");
                   nextPlayer.addCard(deck.piocher()); // Le joueur suivant pioche 2 cartes
                   nextPlayer.addCard(deck.piocher());
-                  break;
+              }
           }
       }
   
@@ -101,9 +101,9 @@ import java.util.ArrayList;
               gamePile.add(playedCard); // Ajouter la carte à la pile de défausse
               System.out.println(currentPlayer.getName() + " a joué : " + playedCard);
   
-              if (playedCard instanceof CarteAction) {
+              if (playedCard instanceof CarteAction carteAction) {
                   // Si c'est une carte d'action, gérer son effet
-                  specialCardCase((CarteAction) playedCard);
+                  specialCardCase(carteAction);
               } else if (playedCard instanceof CarteSpeciale) {
                   // Si c'est une carte spéciale, choisir une couleur
                   char chosenColor = currentPlayer.choisirCouleur();

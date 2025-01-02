@@ -21,23 +21,10 @@ public class Carte {
     public void setCouleur(char couleur) {
         this.couleur = couleur;
     }
-
-    public static void main (String[] args){ 
     
-     // Création de cartes
-     CarteNormale carte1 = new CarteNormale(5,'R');
-     CarteAction carte2 = new CarteAction("passer",'B'); 
-     CarteSpeciale carte3 = new CarteSpeciale("wild"); 
-        
-      // Affichage
-     carte1.afficher(); 
-     carte2.afficher(); 
-     carte3.afficher(); 
-              
-    }
-
-    public boolean matches(Carte topCard) {
-        // Assuming cards match if either their rank (valeur) or suit (couleur) is the same
-        return (this.valeur == null ? topCard.getValeur() == null : this.valeur.equals(topCard.getValeur())) || this.couleur == topCard.getCouleur();
-    }
+   public boolean matches(Carte topCard) {
+    // Assuming cards match if either their rank (valeur) or suit (couleur) is the same
+    return (this.valeur == null ? topCard.getValeur() == null : this.valeur.equals(topCard.getValeur())) || this.couleur == topCard.getCouleur();
+   }
+   
 }
