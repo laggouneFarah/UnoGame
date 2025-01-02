@@ -67,4 +67,8 @@ public class Deck {
             System.out.println(carte);
         }
     }
+    public void remettreDansDeck(Carte carte) {
+        cartes.add(carte); // Ajouter la carte à la fin du deck
+    }    
+
 }
