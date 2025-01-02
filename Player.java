@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Scanner;
 
 public class Player {
     final String playerName;          // Name of the player
@@ -105,5 +106,28 @@ public class Player {
             }
         }
     }
+    // Méthode pour que le joueur choisisse une couleur
+    public char choisirCouleur() {
+        Scanner scanner = new Scanner(System.in);
+        char chosenColor = ' ';
+        boolean validChoice = false;
 
+        while (!validChoice) {
+            System.out.println(playerName+ ", choisissez une couleur : (R)ouge, (V)ert, (B)leu, (J)aune");
+            String input = scanner.nextLine().toUpperCase();
+
+            if (input.length() == 1) {
+                chosenColor = input.charAt(0);
+                if (chosenColor == 'R' || chosenColor == 'V' || chosenColor == 'B' || chosenColor == 'J') {
+                    validChoice = true;
+                } else {
+                    System.out.println("Choix invalide. Veuillez entrer R, V, B ou J.");
+                }
+            } else {
+                System.out.println("Veuillez entrer une seule lettre (R, V, B ou J).");
+            }
+        }
+
+        return chosenColor;
+    }
 }
