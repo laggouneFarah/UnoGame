@@ -6,10 +6,8 @@ public class CarteSpeciale extends Carte {
 			throw new IllegalArgumentException("Type non valide");
 		}
 	}
-	//j'ai redefinie la methode psk ay tkhrjli null
-        @Override
+	//j'ai redefinie la methode psk ay tkhrjli null fi valeur
 	public void afficher() {
-        // Redéfinir l'affichage sans couleur pour CarteSpeciale
         System.out.println("Carte spéciale: " + getValeur());
     }
 }

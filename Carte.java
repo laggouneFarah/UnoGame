@@ -1,5 +1,5 @@
 public class Carte {
-	private final String valeur; // num , signe 
+	private String valeur; // num , signe 
 	private char couleur;// r , b , j ,v
 	public Carte(String valeur, char couleur) {
 		this.couleur=couleur;
@@ -17,14 +17,24 @@ public class Carte {
     public void afficher() {
         System.out.println("Carte: " + valeur + " " + couleur);
     }
-
     public void setCouleur(char couleur) {
         this.couleur = couleur;
     }
-    
-   public boolean matches(Carte topCard) {
-    // Assuming cards match if either their rank (valeur) or suit (couleur) is the same
-    return (this.valeur == null ? topCard.getValeur() == null : this.valeur.equals(topCard.getValeur())) || this.couleur == topCard.getCouleur();
-   }
-   
+    public void setValeur(String valeur){
+        this.valeur = valeur;
+    }
+
+    public static void main(String[] args){
+        CarteNormale c1=new CarteNormale(9, 'r');
+        CarteAction c2=new CarteAction("Passer", 'b');
+        CarteSpeciale c3=new CarteSpeciale("wild");
+
+        c1.afficher();
+        c2.afficher();
+        c3.afficher();
+
+
+
+
+    }
 }
