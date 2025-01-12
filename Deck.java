@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.util.Collections;
+
 public class Deck {
     private final ArrayList<Carte> cartes;
 
@@ -9,26 +11,25 @@ public class Deck {
     }
 
     private void initialiserDeck() {
-        char[] couleur = {'r','b','j','v'};
-       
+        char[] couleurs = {'r', 'b', 'j', 'v'};
 
-        // ajouter les cartes normales (0 à 9 pour chaque couleur, 2 de chaque sauf le 0)
-        for (int j=0;j<4;j++) {
+        for (char couleur : couleurs) {
             for (int numero = 0; numero <= 9; numero++) {
                 cartes.add(new CarteNormale(numero, couleur));
-                if (numero != 0) { // Sauf pour le 0
+                if (numero != 0) { 
                     cartes.add(new CarteNormale(numero, couleur));
                 }
             }
         }
         
-        String action;
-
-        for (int j=0;j<4;j++) {
-            for (int i=0;i<2;i++) {
-                                cartes.add(new CarteAction(action , couleur));
+        String[] actions = {"+2", "Inverser", "Passer"};
+        for (char couleur : couleurs) {
+            for (String action : actions) {
+                cartes.add(new CarteAction(action, couleur));
+                cartes.add(new CarteAction(action, couleur));
             }
         }
+        
 
         for (int i = 0; i < 4; i++) {
             cartes.add(new CarteSpeciale("wild"));
@@ -36,42 +37,34 @@ public class Deck {
         }
     }
 
-    
-
-       public final void melanger() {
+    public final void melanger() {
         Collections.shuffle(cartes);
-       }
+    }
 
-      // Piocher une carte
-       public Carte piocher() {
+    public Carte piocher() {
         if (cartes.isEmpty()) {
             System.out.println("Le deck est vide !");
             return null;
         }
-        return cartes.remove(cartes.size() - 1); // Retire la dernière carte
-        }
+        return cartes.remove(cartes.size() - 1); 
+    }
 
-        //pour rejouer
-
-        public void reinitialiserDeck() {
+    public void reinitialiserDeck() {
         cartes.clear();
         initialiserDeck();
         melanger();
-       }
- 
-       // afficher les cartes restantes dans le deck
-       public void afficherDeck() {
+    }
+
+    public void afficherDeck() {
         for (Carte carte : cartes) {
-            System.out.println(carte);
+            carte.afficher();
         }
-        }
+    }
 
-     // hadi machi ana li drtha 9alek zidi Bch trj3i une carte l paquet tae les cartes  ki y9olk f jeu 
-       public void remettreDansDeck(Carte carte) {
-        cartes.add(carte); // Ajouter la carte à la fin du deck
-        }
+    public void remettreDansDeck(Carte carte) {
+        cartes.add(carte); 
+    }
 
-    // Méthode main pour tester la classe Deck
     public static void main(String[] args) {
         Deck deck = new Deck();
 
@@ -81,7 +74,10 @@ public class Deck {
         System.out.println("\nPioche de 5 cartes :");
         for (int i = 0; i < 5; i++) {
             Carte cartePiochee = deck.piocher();
-            System.out.println("Carte piochée : " + cartePiochee);
+            if (cartePiochee != null) {
+                System.out.println("Carte piochée : ");
+                cartePiochee.afficher();
+            }
         }
 
         System.out.println("\nDeck après pioche :");
