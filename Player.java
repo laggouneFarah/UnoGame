@@ -132,7 +132,7 @@ public class Player {
         System.out.println("\nUpdated hand after drawing:");
         player.displayHand();
 
-        Carte topCard = new CarteNormale(5, 'r'); 
+        Carte topCard = new CarteNormale(9, 'v'); 
         System.out.print("\ntop card ");
         topCard.afficher();
         System.out.println();
