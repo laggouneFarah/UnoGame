@@ -6,7 +6,7 @@ public class Main{
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         ArrayList<Player> players = new ArrayList<>();
-        
+        Deck jeuDeCartes = new Deck();
         // Get number of players
         System.out.println("entrer le nombre de joueur");
         int numberOfPlayers = scanner.nextInt();
@@ -28,8 +28,8 @@ public class Main{
         }
         
         // Start game
-        Game game = new Game(players);
-        game.start();
+        Game game = new Game(players , jeuDeCartes);
+        game.startGame();
         
         scanner.close();
     }
