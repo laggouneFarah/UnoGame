@@ -8,12 +8,17 @@ public class Game {
     private boolean sensHoraire;
     private int indexDuCurrentJoueur;
 
-    public Game(List<Player> joueurs, Deck jeuDeCartes, List<Carte> cartesSurTable) {
+    // Constructeur
+    public Game(List<Player> joueurs, Deck jeuDeCartes) {
+        if (jeuDeCartes == null) {
+            throw new IllegalArgumentException("ERREUR , le jeu de cartes ne doit pas etre NULL.");
+        }
+
         this.joueurs = joueurs;
         this.jeuDeCartes = jeuDeCartes;
-        this.cartesSurTable = cartesSurTable;
-        this.sensHoraire = true;
-        this.indexDuCurrentJoueur = 0;
+        this.cartesSurTable = new ArrayList<>(); 
+        this.sensHoraire = true; 
+        this.indexDuCurrentJoueur = 0; 
     }
 
     public List<Player> getJoueurs() {
@@ -43,19 +48,19 @@ public class Game {
     public void piocher(Player joueur) {
         if (!aCarteValide(joueur)) {
             Carte cartePiochee = jeuDeCartes.piocher();
-            joueur.addCarteMain(cartePiochee);
-            System.out.println(joueur.getNom() + " Tu viens de piocher la carte : " + cartePiochee);
+            joueur.addCard(cartePiochee);
+            System.out.println(joueur.getName() + " Tu viens de piocher la carte : " + cartePiochee);
         } else {
-            System.out.println(joueur.getNom() + " Sorry, tu as une carte valide, tu ne peux pas piocher !");
+            System.out.println(joueur.getName() + " Sorry, tu as une carte valide, tu ne peux pas piocher !");
         }
     }
 
     private boolean aCarteValide(Player joueur) {
         List<Carte> mainDuPlayer = joueur.getMain();
-        Carte derniereCarteSurLeDeck =  cartesSurTable.getFirst();
+        Carte derniereCarteSurLeDeck =  cartesSurTable.get(0);
         
         for (Carte carte : mainDuPlayer) {
-            if (carte.getCouleur().equals(derniereCarteSurLeDeck.getCouleur()) || carte.getValeur() == derniereCarteSurLeDeck.getValeur()) {
+            if (carte.getCouleur()==derniereCarteSurLeDeck.getCouleur() || carte.getValeur() == derniereCarteSurLeDeck.getValeur()) {
                 return true;
             }
         }
@@ -66,7 +71,7 @@ public class Game {
         List<Carte> mainDuPlayer = joueur.getMain();
         
         for (Carte carte : mainDuPlayer) {
-            if (carte.getCouleur().equals(chosenColor) || carte.getValeur() == cartesSurTable.getFirst().getValeur()) {
+           if (Character.toString(carte.getCouleur()).equals(chosenColor)|| carte.getValeur() == cartesSurTable.get(0).getValeur()) {
                 return true;
             }
         }
@@ -79,55 +84,55 @@ public class Game {
         } else {
             indexDuCurrentJoueur = (indexDuCurrentJoueur - 1 + joueurs.size()) % joueurs.size();
         }
-        System.out.println("C'est maintenant le tour de " + joueurs.get(indexDuCurrentJoueur).getNom());
+        System.out.println("C'est maintenant le tour de " + joueurs.get(indexDuCurrentJoueur).getName());
     }
 
     public void Pass() {
         Player currentJoueur = joueurs.get(indexDuCurrentJoueur);
-        System.out.println(currentJoueur.getNom() + " passe son tour.");
+        System.out.println(currentJoueur.getName() + " passe son tour.");
         NextPlayer();
     }
 
-    public void ReactToCard(Card carteVisible) {
+    public void ReactToCard(Carte carteVisible) {
         switch (carteVisible.getType()) {
-            case REVERSE:
+            case "REVERSE":
                 sensHoraire = !sensHoraire;
                 System.out.println("Le sens du jeu a été inversé !");
                 NextPlayer();
                 break;
-            case PLUS2:
+            case "PLUS2":
                 Player nextJoueur = joueurs.get((indexDuCurrentJoueur + (sensHoraire ? 1 : -1) + joueurs.size()) % joueurs.size());
-                nextJoueur.addCarte(jeuDeCartes.piocher());
-                nextJoueur.addCarte(jeuDeCartes.piocher());
-                System.out.println(nextJoueur.getNom() + " a pioché 2 cartes !");
+                nextJoueur.addCard(jeuDeCartes.piocher());
+                nextJoueur.addCard(jeuDeCartes.piocher());
+                System.out.println(nextJoueur.getName() + " a pioché 2 cartes !");
                 NextPlayer();
                 break;
-            case WILD:
+            case "WILD":
                 String nouvelleCouleur = choisirCouleur();
                 System.out.println("La couleur a été changée en : " + nouvelleCouleur);
                 NextPlayer();
                 break;
-            case WILD_FOUR:
+            case "WILD_FOUR":
                 String chosenColor = choisirCouleur();
                 System.out.println("Le joueur a choisi la couleur : " + chosenColor);
                 Player joueurSuivant = joueurs.get((indexDuCurrentJoueur + (sensHoraire ? 1 : -1) + joueurs.size()) % joueurs.size());
                 if (aCarteValide(joueurSuivant, chosenColor)) {
                     for (int i = 0; i < 4; i++) {
-                        joueurSuivant.addCarte(jeuDeCartes.piocher());
+                        joueurSuivant.addCard(jeuDeCartes.piocher());
                     }
-                    System.out.println(joueurSuivant.getNom() + " a pioché 4 cartes et perd son tour !");
+                    System.out.println(joueurSuivant.getName() + " a pioché 4 cartes et perd son tour !");
                     NextPlayer();
                     Pass();
                 } else {
                     for (int i = 0; i < 4; i++) {
-                        joueurSuivant.addCarte(jeuDeCartes.piocher());
+                        joueurSuivant.addCard(jeuDeCartes.piocher());
                     }
-                    System.out.println(joueurSuivant.getNom() + " a pioché 4 cartes et perd son tour !");
+                    System.out.println(joueurSuivant.getName() + " a pioché 4 cartes et perd son tour !");
                     NextPlayer();
                     Pass();
                 }
                 break;
-            case BLOCK:
+            case "BLOCK":
                 System.out.println("Le joueur suivant perd son tour !");
                 NextPlayer();
                 Pass();
@@ -143,7 +148,7 @@ public class Game {
             Player joueur = joueurs.get(i);
             for (int j = 0; j < 7; j++) {
                 Carte carte = jeuDeCartes.piocher();
-                joueur.addCarteMain(carte);
+                joueur.addCard(carte);
             }
         }
     }
@@ -151,21 +156,21 @@ public class Game {
     public void tirageFirst() {
         Carte carte1 = jeuDeCartes.piocher();
         while (isCarteSpeciale(carte1)) {
-            jeuDeCartes.ajouterCarte(carte1);
-            jeuDeCartes.shufflerDeck();
+            jeuDeCartes.remettreDansDeck(carte1);
+            jeuDeCartes.melanger();
             carte1 = jeuDeCartes.piocher();
         }
-        cartesSurTable.addCarte1(carte1);
+        cartesSurTable.add(carte1);
         System.out.println("La première carte visible sur la table est : " + carte1);
     }
 
-    public boolean isCarteSpeciale(Card carte) {
+    public boolean isCarteSpeciale(Carte carte) {
         switch (carte.getType()) {
-            case REVERSE:
-            case PLUS2:
-            case WILD:
-            case WILD_FOUR:
-            case BLOCK:
+            case "REVERSE":
+            case "PLUS2":
+            case "WILD":
+            case "WILD_FOUR":
+            case "BLOCK":
                 return true;
             default:
                 return false;
@@ -177,7 +182,7 @@ public class Game {
     public boolean endGAME() {
         for (Player joueur : joueurs) {
             if (joueur.getMain().isEmpty()) {
-                System.out.println(joueur.getNom() + " a gagné ! Félicitations !");
+                System.out.println(joueur.getName() + " a gagné ! Félicitations !");
                 return true;
             }
         }
@@ -189,15 +194,15 @@ public class Game {
         tirageFirst();
         while (!endGAME()) {
             Player currentPlayer = joueurs.get(indexDuCurrentJoueur);
-            System.out.println("C'est au tour de " + currentPlayer.getNom());
+            System.out.println("C'est au tour de " + currentPlayer.getName());
             
-            if (!cartesSurTable.isEmpty() && isCarteSpeciale(cartesSurTable.getFirst())) {
-                ReactToCard(cartesSurTable.getFirst());
+            if (!cartesSurTable.isEmpty() && isCarteSpeciale(cartesSurTable.get(0))) {
+                ReactToCard(cartesSurTable.get(0));
             } else {
                 if (!aCarteValide(currentPlayer)) {
                     piocher(currentPlayer);
                 } else {
-                    System.out.println(currentPlayer.getNom() + " joue sa carte.");
+                    System.out.println(currentPlayer.getName() + " joue sa carte.");
                 }
             }
             
