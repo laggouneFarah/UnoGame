@@ -12,8 +12,8 @@ public class Main{
         int numberOfPlayers = scanner.nextInt();
         scanner.nextLine(); // Clear buffer
         
-        if (numberOfPlayers < 2 || numberOfPlayers > 10) {
-            System.out.println("Nombre de joueurs invalide. Le jeu nécessite 2 à 10 joueurs.");
+        if (numberOfPlayers < 1 || numberOfPlayers > 10) {
+            System.out.println("Nombre de joueurs invalide. Le jeu nécessite 1 à 10 joueurs.");
             scanner.close();
             return;
         }
