@@ -14,8 +14,13 @@ public class Carte {
         return valeur;
     }
 
+        @Override
+    public String toString(){
+        return("la carte est: " +valeur+" " +couleur );
+    }
+
     public void afficher() {
-        System.out.println("Carte: " + valeur + " " + couleur);
+        System.out.println(toString());
     }
     public void setCouleur(char couleur) {
         this.couleur = couleur;

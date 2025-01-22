@@ -1,6 +1,8 @@
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
+
 public class Game {
     private List<Player> joueurs;
     private Deck jeuDeCartes;
@@ -21,72 +23,18 @@ public class Game {
         this.indexDuCurrentJoueur = 0; 
     }
 
-    public List<Player> getJoueurs() {
-        return joueurs;
-    }
-
-    public void setJoueurs(List<Player> joueurs) {
-        this.joueurs = joueurs;
-    }
-
-    public boolean isSensHoraire() {
-        return sensHoraire;
-    }
-
-    public void setSensHoraire(boolean sensHoraire) {
-        this.sensHoraire = sensHoraire;
-    }
-
-    public int getIndexDuCurrentJoueur() {
-        return indexDuCurrentJoueur;
-    }
-
-    public void setIndexDuCurrentJoueur(int indexDuCurrentJoueur) {
-        this.indexDuCurrentJoueur = indexDuCurrentJoueur;
-    }
-
     public void piocher(Player joueur) {
         if (!aCarteValide(joueur)) {
             Carte cartePiochee = jeuDeCartes.piocher();
-            joueur.addCard(cartePiochee);
-            System.out.println(joueur.getName() + " Tu viens de piocher la carte : " + cartePiochee);
+            if (cartePiochee != null) {
+                joueur.addCard(cartePiochee);
+                System.out.println(joueur.getName() + " Tu viens de piocher la carte : " + cartePiochee);
+            } else {
+                System.out.println("Le deck est vide !");
+            }
         } else {
             System.out.println(joueur.getName() + " Sorry, tu as une carte valide, tu ne peux pas piocher !");
         }
-    }
-
-    @SuppressWarnings("StringEquality")
-    private boolean aCarteValide(Player joueur) {
-        List<Carte> mainDuPlayer = joueur.getMain();
-        Carte derniereCarteSurLeDeck =  cartesSurTable.get(0);
-        
-        for (Carte carte : mainDuPlayer) {
-            if (carte.getCouleur()==derniereCarteSurLeDeck.getCouleur() || (carte.getValeur() == derniereCarteSurLeDeck.getValeur())) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    @SuppressWarnings("StringEquality")
-    public boolean aCarteValide(Player joueur, String chosenColor) {
-        List<Carte> mainDuPlayer = joueur.getMain();
-        
-        for (Carte carte : mainDuPlayer) {
-           if (Character.toString(carte.getCouleur()).equals(chosenColor)|| carte.getValeur() == cartesSurTable.get(0).getValeur()) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public void NextPlayer() {
-        if (sensHoraire) {
-            indexDuCurrentJoueur = (indexDuCurrentJoueur + 1) % joueurs.size();
-        } else {
-            indexDuCurrentJoueur = (indexDuCurrentJoueur - 1 + joueurs.size()) % joueurs.size();
-        }
-        System.out.println("C'est maintenant le tour de " + joueurs.get(indexDuCurrentJoueur).getName());
     }
 
     public void Pass() {
@@ -94,10 +42,33 @@ public class Game {
         System.out.println(currentJoueur.getName() + " passe son tour.");
         NextPlayer();
     }
- 
 
+    private boolean aCarteValide(Player joueur) {
+        List<Carte> mainDuPlayer = joueur.getMain();
+        if (cartesSurTable.isEmpty()) {
+            return false; // Si aucune carte sur la table, le joueur ne peut pas jouer
+        }
+        Carte derniereCarteSurLeDeck = cartesSurTable.get(0);
+        
+        for (Carte carte : mainDuPlayer) {
+            if (carte.getCouleur() == derniereCarteSurLeDeck.getCouleur() || carte.getValeur().equals(derniereCarteSurLeDeck.getValeur())) {
+                return true;
+            }
+        }
+        return false;
+    }
 
-    @SuppressWarnings("ConvertToTryWithResources")
+    public void NextPlayer() {
+        if (!cartesSurTable.isEmpty()) {
+            System.out.println("Carte actuelle sur la table : " + cartesSurTable.get(0));
+        }
+        if (sensHoraire) {
+            indexDuCurrentJoueur = (indexDuCurrentJoueur + 1) % joueurs.size();
+        } else {
+            indexDuCurrentJoueur = (indexDuCurrentJoueur - 1 + joueurs.size()) % joueurs.size();
+        }
+    }
+
     public String choisirCouleur() {
         Scanner scanner = new Scanner(System.in);
         String couleurChoisie;
@@ -105,8 +76,6 @@ public class Game {
         while (true) {
             System.out.println("Choisissez une couleur (rouge, jaune, vert, bleu) : ");
             couleurChoisie = scanner.nextLine();
-
-         
             if (couleurChoisie.equals("rouge") || couleurChoisie.equals("jaune") || 
                 couleurChoisie.equals("vert") || couleurChoisie.equals("bleu")) {
                 break; 
@@ -114,44 +83,43 @@ public class Game {
                 System.out.println("Couleur invalide. Veuillez choisir entre rouge, jaune, vert ou bleu.");
             }
         }
-        scanner.close();
         return couleurChoisie;
-        
     }
-
 
     public void ReactToCard(Carte carteVisible) {
         if (carteVisible instanceof CarteAction) {
             String action = carteVisible.getValeur(); 
             switch (action) {
-                case "Inverser" -> {
+                case "Inverser":
                     sensHoraire = !sensHoraire;
                     System.out.println("Le sens du jeu a été inversé !");
                     NextPlayer();
-                }
-                case "+2" -> {
+                    break;
+                case "+2":
                     Player nextJoueur = joueurs.get((indexDuCurrentJoueur + (sensHoraire ? 1 : -1) + joueurs.size()) % joueurs.size());
                     nextJoueur.addCard(jeuDeCartes.piocher());
                     nextJoueur.addCard(jeuDeCartes.piocher());
                     System.out.println(nextJoueur.getName() + " a pioché 2 cartes !");
                     NextPlayer();
-                }
-                case "Passer" -> {
+                    break;
+                case "Passer":
                     System.out.println("Le joueur suivant perd son tour !");
                     NextPlayer();
                     Pass();
-                }
-                default -> System.out.println("Cette carte d'action n'a pas d'effet spécial.");
+                    break;
+                default:
+                    System.out.println("Cette carte d'action n'a pas d'effet spécial.");
+                    break;
             }
         } else if (carteVisible instanceof CarteSpeciale) {
             String valeur = carteVisible.getValeur();
             switch (valeur) {
-                case "wild" -> {
+                case "wild":
                     String nouvelleCouleur = choisirCouleur();
                     System.out.println("La couleur a été changée en : " + nouvelleCouleur);
                     NextPlayer();
-                }
-                case "wildfour" -> {
+                    break;
+                case "wildfour":
                     String chosenColor = choisirCouleur();
                     System.out.println("Le joueur a choisi la couleur : " + chosenColor);
                     Player joueurSuivant = joueurs.get((indexDuCurrentJoueur + (sensHoraire ? 1 : -1) + joueurs.size()) % joueurs.size());
@@ -161,21 +129,20 @@ public class Game {
                     System.out.println(joueurSuivant.getName() + " a pioché 4 cartes et perd son tour !");
                     NextPlayer();
                     Pass();
-                }
-                default -> System.out.println("Cette carte spéciale n'a pas d'effet spécial.");
+                    break;
+                default:
+                    System.out.println("Cette carte spéciale n'a pas d'effet spécial.");
+                    break;
             }
         } else if (carteVisible instanceof CarteNormale) {
             System.out.println("Cette carte est une carte normale et n'a pas d'effet spécial.");
-            // Vous pouvez ajouter ici la logique pour jouer une carte normale si nécessaire
         } else {
             System.out.println("Type de carte inconnu.");
         }
     }
-    
 
     public void distribuerCartesDebut() {
-        for (int i = 0; i < joueurs.size(); i++) {
-            Player joueur = joueurs.get(i);
+        for (Player joueur : joueurs) {
             for (int j = 0; j < 7; j++) {
                 Carte carte = jeuDeCartes.piocher();
                 joueur.addCard(carte);
@@ -205,8 +172,6 @@ public class Game {
         return false; 
     }
 
-   
-
     public boolean endGAME() {
         for (Player joueur : joueurs) {
             if (joueur.getMain().isEmpty()) {
@@ -224,17 +189,73 @@ public class Game {
             Player currentPlayer = joueurs.get(indexDuCurrentJoueur);
             System.out.println("C'est au tour de " + currentPlayer.getName());
             
-            if (!cartesSurTable.isEmpty() && carteNotNormale(cartesSurTable.get(0))) {
-                ReactToCard(cartesSurTable.get(0));
+            // Afficher les cartes du joueur
+            System.out.println("Vos cartes : " + currentPlayer.getMain());
+    
+            if (!aCarteValide(currentPlayer)) {
+                System.out.println("Vous ne pouvez pas jouer, vous devez piocher une carte.");
+                piocher(currentPlayer);
+            } else if (carteNotNormale(currentPlayer.getMain())) {
+                ReactToCard(currentPlayer.getMain());
             } else {
-                if (!aCarteValide(currentPlayer)) {
-                    piocher(currentPlayer);
-                } else {
-                    System.out.println(currentPlayer.getName() + " joue sa carte.");
-                }
+    
+                jouerCarte(currentPlayer);
             }
             
             NextPlayer();
         }
     }
-}
+    
+
+    private void jouerCarte(Player joueur) {
+        Scanner scanner = new Scanner(System.in);
+        List<Carte> mainDuJoueur = joueur.getMain();
+
+        // Afficher les cartes du joueur
+        for (int i = 0; i < mainDuJoueur.size(); i++) {
+            System.out.println(i + ": " + mainDuJoueur.get(i));
+        }
+
+        boolean carteJouee = false; // Indicateur pour savoir si une carte a été jouée
+
+        while (!carteJouee) {
+            System.out.println("Entrez le numéro de la carte que vous voulez jouer : ");
+            int choix = scanner.nextInt();
+
+            // Vérifier que le choix est valide
+            if (choix >= 0 && choix < mainDuJoueur.size()) {
+                Carte carteChoisie = mainDuJoueur.get(choix);
+                // Vérifier si la carte choisie est jouable
+                if (carteChoisie.getCouleur() == cartesSurTable.get(0).getCouleur() || 
+                    carteChoisie.getValeur().equals(cartesSurTable.get(0).getValeur())) {
+                    
+                    // Jouer la carte
+                    cartesSurTable.add(carteChoisie);
+                    joueur.getMain().remove(carteChoisie);
+                    System.out.println(joueur.getName() + " a joué la carte : " + carteChoisie);
+                    carteJouee = true; // Une carte a été jouée, sortir de la boucle
+                } else {
+                    System.out.println("Cette carte ne peut pas être jouée ! Veuillez choisir une autre carte.");
+                }
+            } else {
+                System.out.println("Choix invalide !");
+            }
+        }
+    }
+    public static void main(String[] args) {
+        // Créer un deck de cartes
+        Deck deck = new Deck(); // Assurez-vous que la classe Deck est définie
+
+        // Créer des joueurs
+        List<Player> joueurs = new ArrayList<>();
+        joueurs.add(new Player("Alice"));
+        joueurs.add(new Player("Bob"));
+        joueurs.add(new Player("Charlie"));
+
+        // Créer une instance de Game
+        Game game = new Game(joueurs, deck);
+
+                // Démarrer le jeu
+                game.startGame();
+            }
+        }

@@ -7,6 +7,7 @@ public class CarteSpeciale extends Carte {
 		}
 	}
 	//j'ai redefinie la methode psk ay tkhrjli null fi valeur
+        @Override
 	public void afficher() {
         System.out.println("Carte spéciale: " + getValeur());
     }
