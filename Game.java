@@ -56,15 +56,9 @@ public class Game {
     }
 
     private boolean aCarteValide(Player joueur) {
-        List<Carte> mainDuPlayer = joueur.getMain();
-        Carte derniereCarteSurLeDeck =  cartesSurTable.get(0);
-        
-        for (Carte carte : mainDuPlayer) {
-            if (carte.getCouleur()==derniereCarteSurLeDeck.getCouleur() || carte.getValeur() == derniereCarteSurLeDeck.getValeur()) {
-                return true;
-            }
-        }
-        return false;
+        Carte derniereCarteSurLeDeck = cartesSurTable.get(0);
+    
+        return joueur.hasPlayableCard(derniereCarteSurLeDeck);
     }
 
     public boolean aCarteValide(Player joueur, String chosenColor) {
@@ -239,3 +233,20 @@ public class Game {
         }
     }
 }
+
+    public static void main(String[] args) {
+        // Créer un deck de cartes
+        Deck deck = new Deck(); // Assurez-vous que la classe Deck est définie
+
+        // Créer des joueurs
+        List<Player> joueurs = new ArrayList<>();
+        joueurs.add(new Player("Alice", true));
+        joueurs.add(new Player("Bob", true));
+        joueurs.add(new Player("Charlie", true));
+
+        // Créer une instance de Game
+        Game game = new Game(joueurs, deck);
+
+        // Démarrer le jeu
+        game.startGame();
+    }
