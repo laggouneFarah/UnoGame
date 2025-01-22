@@ -27,11 +27,11 @@ public class Main{
             players.add(new Player(playerName, isHuman));
         }
         
-        // Start game
+        /* 
         Game game = new Game(players , jeuDeCartes);
         game.startGame();
         
-        scanner.close();
+        scanner.close();*/
     }
 
 }

@@ -66,14 +66,14 @@ public class Deck {
     }
 
     public static void main(String[] args) {
-        Deck deck = new Deck();
+        Deck jeuDeCartes = new Deck();
 
         System.out.println("Deck initial :");
-        deck.afficherDeck();
+        jeuDeCartes.afficherDeck();
 
         System.out.println("\nPioche de 5 cartes :");
         for (int i = 0; i < 5; i++) {
-            Carte cartePiochee = deck.piocher();
+            Carte cartePiochee = jeuDeCartes.piocher();
             if (cartePiochee != null) {
                 System.out.println("Carte piochée : ");
                 cartePiochee.afficher();
@@ -81,10 +81,10 @@ public class Deck {
         }
 
         System.out.println("\nDeck après pioche :");
-        deck.afficherDeck();
+        jeuDeCartes.afficherDeck();
 
         System.out.println("\nRéinitialisation du deck :");
-        deck.reinitialiserDeck();
-        deck.afficherDeck();
+        jeuDeCartes.reinitialiserDeck();
+        jeuDeCartes.afficherDeck();
     }
 }
