@@ -112,6 +112,10 @@ public class Player {
         return chosenColor;
     }
 
+    public ArrayList<Carte> getMain() {
+        return cardsInHand;
+    }
+    
     public static void main(String[] args) {
         Deck deck = new Deck();
         deck.melanger();
