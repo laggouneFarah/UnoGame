@@ -1,5 +1,5 @@
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 public class Game {
     private List<Player> joueurs;
@@ -55,18 +55,20 @@ public class Game {
         }
     }
 
+    @SuppressWarnings("StringEquality")
     private boolean aCarteValide(Player joueur) {
         List<Carte> mainDuPlayer = joueur.getMain();
         Carte derniereCarteSurLeDeck =  cartesSurTable.get(0);
         
         for (Carte carte : mainDuPlayer) {
-            if (carte.getCouleur()==derniereCarteSurLeDeck.getCouleur() || carte.getValeur() == derniereCarteSurLeDeck.getValeur()) {
+            if (carte.getCouleur()==derniereCarteSurLeDeck.getCouleur() || (carte.getValeur() == derniereCarteSurLeDeck.getValeur())) {
                 return true;
             }
         }
         return false;
     }
 
+    @SuppressWarnings("StringEquality")
     public boolean aCarteValide(Player joueur, String chosenColor) {
         List<Carte> mainDuPlayer = joueur.getMain();
         
@@ -95,6 +97,7 @@ public class Game {
  
 
 
+    @SuppressWarnings("ConvertToTryWithResources")
     public String choisirCouleur() {
         Scanner scanner = new Scanner(System.in);
         String couleurChoisie;
@@ -121,36 +124,34 @@ public class Game {
         if (carteVisible instanceof CarteAction) {
             String action = carteVisible.getValeur(); 
             switch (action) {
-                case "Inverser":
+                case "Inverser" -> {
                     sensHoraire = !sensHoraire;
                     System.out.println("Le sens du jeu a été inversé !");
                     NextPlayer();
-                    break;
-                case "+2":
+                }
+                case "+2" -> {
                     Player nextJoueur = joueurs.get((indexDuCurrentJoueur + (sensHoraire ? 1 : -1) + joueurs.size()) % joueurs.size());
                     nextJoueur.addCard(jeuDeCartes.piocher());
                     nextJoueur.addCard(jeuDeCartes.piocher());
                     System.out.println(nextJoueur.getName() + " a pioché 2 cartes !");
                     NextPlayer();
-                    break;
-                case "Passer":
+                }
+                case "Passer" -> {
                     System.out.println("Le joueur suivant perd son tour !");
                     NextPlayer();
                     Pass();
-                    break;
-                default:
-                    System.out.println("Cette carte d'action n'a pas d'effet spécial.");
-                    break;
+                }
+                default -> System.out.println("Cette carte d'action n'a pas d'effet spécial.");
             }
         } else if (carteVisible instanceof CarteSpeciale) {
             String valeur = carteVisible.getValeur();
             switch (valeur) {
-                case "wild":
+                case "wild" -> {
                     String nouvelleCouleur = choisirCouleur();
                     System.out.println("La couleur a été changée en : " + nouvelleCouleur);
                     NextPlayer();
-                    break;
-                case "wildfour":
+                }
+                case "wildfour" -> {
                     String chosenColor = choisirCouleur();
                     System.out.println("Le joueur a choisi la couleur : " + chosenColor);
                     Player joueurSuivant = joueurs.get((indexDuCurrentJoueur + (sensHoraire ? 1 : -1) + joueurs.size()) % joueurs.size());
@@ -160,10 +161,8 @@ public class Game {
                     System.out.println(joueurSuivant.getName() + " a pioché 4 cartes et perd son tour !");
                     NextPlayer();
                     Pass();
-                    break;
-                default:
-                    System.out.println("Cette carte spéciale n'a pas d'effet spécial.");
-                    break;
+                }
+                default -> System.out.println("Cette carte spéciale n'a pas d'effet spécial.");
             }
         } else if (carteVisible instanceof CarteNormale) {
             System.out.println("Cette carte est une carte normale et n'a pas d'effet spécial.");
