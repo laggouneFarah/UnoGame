@@ -88,6 +88,7 @@ public class Player {
     }
 
 
+    @SuppressWarnings("ConvertToTryWithResources")
     public char choisirCouleur() {
         Scanner scanner = new Scanner(System.in);
         char chosenColor = ' ';
