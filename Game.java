@@ -57,11 +57,6 @@ public class Game {
 
     @SuppressWarnings("StringEquality")
     private boolean aCarteValide(Player joueur) {
-<<<<<<< HEAD
-        Carte derniereCarteSurLeDeck = cartesSurTable.get(0);
-    
-        return joueur.hasPlayableCard(derniereCarteSurLeDeck);
-=======
         List<Carte> mainDuPlayer = joueur.getMain();
         Carte derniereCarteSurLeDeck =  cartesSurTable.get(0);
         
@@ -71,7 +66,6 @@ public class Game {
             }
         }
         return false;
->>>>>>> d6f86e7efc2ce55558d3ba17b6361e03816440e1
     }
 
     @SuppressWarnings("StringEquality")
@@ -244,20 +238,3 @@ public class Game {
         }
     }
 }
-
-    public static void main(String[] args) {
-        // Créer un deck de cartes
-        Deck deck = new Deck(); // Assurez-vous que la classe Deck est définie
-
-        // Créer des joueurs
-        List<Player> joueurs = new ArrayList<>();
-        joueurs.add(new Player("Alice", true));
-        joueurs.add(new Player("Bob", true));
-        joueurs.add(new Player("Charlie", true));
-
-        // Créer une instance de Game
-        Game game = new Game(joueurs, deck);
-
-        // Démarrer le jeu
-        game.startGame();
-    }
