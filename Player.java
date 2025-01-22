@@ -4,15 +4,13 @@ import java.util.Scanner;
 
 public class Player {
     private final String playerName;          
-    private final ArrayList<Carte> cardsInHand;
-    private final boolean isHumanPlayer;     
+    private final ArrayList<Carte> cardsInHand;   
     private final Random rng;                
 
     // Constructor
-    public Player(String playerName, boolean isHumanPlayer) {
+    public Player(String playerName) {
         this.playerName = playerName;
-        this.cardsInHand = new ArrayList<>();  
-        this.isHumanPlayer = isHumanPlayer;
+        this.cardsInHand = new ArrayList<>(); 
         this.rng = new Random();
     }
 
@@ -121,7 +119,7 @@ public class Player {
         Deck deck = new Deck();
         deck.melanger();
 
-        Player player = new Player("islam", true);
+        Player player = new Player("islam");
 
         // Add some cards to the player's hand
         player.addCard(new CarteNormale(5, 'r')); 
